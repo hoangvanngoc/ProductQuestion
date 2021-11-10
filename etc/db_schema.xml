@@ -1,0 +1,38 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+         <table name="product_questions" resource="default" engine="innodb" comment="Product Questions">
+            <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true"  comment="Entity ID"/>
+            <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Product Id"/>
+            <column xsi:type="int" name="customer_id" padding="10" unsigned="true" nullable="false" identity="false" comment="order item id"/>
+            <column xsi:type="varchar" name="author_name" nullable="true" length="64" comment="Nick Name"/>
+            <column xsi:type="varchar" name="email" nullable="true"  comment="Email Customer, Guest"/>
+            <column xsi:type="boolean" name="is_send_email"  comment="is Send Email"/>
+            <column xsi:type="smallint" name="is_answer"  comment="Is Answer"/>
+            <column xsi:type="smallint" name="status"  comment="Status Question"/>
+            <column xsi:type="varchar" name="question" nullable="true"  comment="Question Content"/>
+            <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"   comment="Creation Time"/>
+            <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Update Time"/>
+
+            <constraint xsi:type="primary" referenceId="PRIMARY">
+                <column name="entity_id"/>
+            </constraint>
+        </table>
+
+        <table name="product_answers" resource="default" engine="innodb" comment="Product Answer">
+            <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true"  comment="Entity ID"/>
+            <column xsi:type="int" name="question_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Question Id"/>
+            <column xsi:type="varchar" name="answer" length="64" comment="Answers"/>
+            <column xsi:type="smallint" name="status" comment="Status"/>
+            <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"   comment="Creation Time"/>
+            <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Update Time"/>
+
+            <constraint xsi:type="primary" referenceId="PRIMARY">
+                <column name="entity_id"/>
+            </constraint>
+        </table>
+</schema>

@@ -1,0 +1,86 @@
+<?php $questions = $block->getProductQuestions()->getData();
+if (isset($questions)) :
+?>
+    <div id="product-review-container-6" data-role="product-review">
+        <div class="block review-list" id="customer-reviews">
+            <div class="block-title">
+                <strong><?= $block->escapeHtml(__('Customer Reply')) ?></strong>
+            </div>
+            <div class="block-content">
+                <ol class="items review-items">
+                    <?php foreach ($questions as $val) : ?>
+                        <li class="item review-item">
+                            <div class="review-title" itemprop="name"><?= $block->escapeHtml(__('Question')) ?></div>
+
+                            <div class="review-content questions"><?= $block->escapeHtml(__($val['question'])) ?></div>
+
+                            <div class="review-details">
+                                <div class="review-author">
+                                    <span class="review-details-label"><?= $block->escapeHtml(__('Post by:')) ?></span>
+                                    <span style="font-weight: 600;" class="review-details-value" itemprop="author"><?= $block->escapeHtml(__($val['author_name'])) ?></span>
+                                </div>
+                                <div class="question-date">
+                                    <span class="question-details-label"><?= $block->escapeHtml(__('Post on:')) ?></span>
+                                    <time class="question-details-value"><?= $block->escapeHtml(__($val['created_at'])) ?></time>
+                                </div>
+                                <div class="answer-wrap">
+                                    <?php $answers = $block->getAnswer($val['entity_id'])->getData();
+                                    ?>
+                                    <?php foreach ($answers as $answer) : ?>
+                                        <h3 class="answer-wrap__title"><?= $block->escapeHtml(__('Admin Answers:')) ?></h3>
+                                        <span class="answer-wrap__content"><?= htmlspecialchars_decode($block->escapeHtml(__($answer['answer']))) ?></span>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                </ol>
+            </div>
+        </div>
+    </div>
+<?php else : ?>
+    <div class="no-question">
+        <h2>Don't have any questions</h2>
+        <p>you can post your questions here!</p>
+    </div>
+<?php endif; ?>
+<!-- form for customer -->
+<form action="<?= $block->getUrl('questions/form/save') ?>" method="post" id="review-form">
+    <fieldset class="fieldset review-fieldset" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>">
+        <span id="input-message-box"></span>
+        <div class="field review-field-nickname required">
+            <label for="question_field" class="label"><span><?= $block->escapeHtml(__('Your Question')) ?></span></label>
+            <div class="control">
+                <textarea name="question" id="question_field" cols="5" rows="3" data-validate="{required:true}"></textarea>
+            </div>
+        </div>
+        <div class="field review-field-summary required">
+            <label for="nickname_field" class="label"><span><?= $block->escapeHtml(__('Your Nick name')) ?></span></label>
+            <div class="control">
+                <input type="text" name="author_name" id="nickname_field" class="input-text" data-validate="{required:true}" />
+            </div>
+        </div>
+        <!-- display this file for Guest -->
+        <?php $isLoggedin = $block->getLogin();
+        if ($isLoggedin) : ?>
+        <?php else : ?>
+            <div class="field review-field-summary required">
+                <label for="email_field" class="label"><span><?= $block->escapeHtml(__('Your Email')) ?></span></label>
+                <div class="control">
+                    <input type="email" name="email" id="email_field" class="input-text" data-validate="{required:true}" />
+                </div>
+            </div>
+        <?php endif; ?>
+        <div class="field review-field-text required" style="display: flex;">
+            <div class="control">
+                <input type="checkbox" name="send_email" id="check-send-email_field" class="input-text" />
+                <label for="check-send-email_field" class="label"><span><?= $block->escapeHtml(__('get notification on email on the anwser is ready')) ?></span></label>
+            </div>
+        </div>
+    </fieldset>
+    <div class="actions-toolbar review-form-actions">
+        <div class="primary actions-primary">
+            <button type="submit" class="action submit primary"><span><?= $block->escapeHtml(__('Submit Question')) ?></span></button>
+        </div>
+    </div>
+</form>
